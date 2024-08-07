@@ -1,0 +1,30 @@
+#on:
+# push:
+#   branches:
+#     - master
+
+name: Revert vst3 break commit
+
+on: 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
+        default: 'master'
+
+jobs:
+  revert_commit:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+           ref: ${{ github.event.inputs.branch }}
+           fetch-depth: 0
+      - name: Revert pushed commit
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git revert ff36c6a251e9da8c0a9d16995be63255279c8282
+          git push
