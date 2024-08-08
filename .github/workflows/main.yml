@@ -1,17 +1,8 @@
-#on:
-# push:
-#   branches:
-#     - master
-
 name: Revert vst3 break commit
-
-on: 
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
-        default: 'master'
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   revert_commit:
@@ -20,7 +11,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
-           ref: ${{ github.event.inputs.branch }}
+           ref: master
            fetch-depth: 0
       - name: Revert pushed commit
         run: |
